@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BCDU-Net ile Mahsul Türü Tespiti</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Derin Öğrenme ile Uydu Görüntülerinden Ürün Türü Tespiti</div>
+        <ul class="nav-links">
+            <li><a href="#anasayfa">Ana Sayfa</a></li>
+            <li><a href="#proje">Proje</a></li>
+            <li><a href="#model">Model</a></li>
+            <li><a href="#sonuclar">Sonuçlar</a></li>
+            <li><a href="#iletisim">İletişim</a></li>
+        </ul>
+    </nav>
+
+    <section id="anasayfa" class="hero">
+        <div class="hero-content">
+            <h1>Zaman Serisi Sentinel-2 Uydu Görüntülerinden Derin Öğrenme ile Ürün Türü Tespiti</h1>
+            <p>BCDU-Net modeli ile Kırklareli bölgesinde 11 farklı mahsul türünün tespiti</p>
+            <div class="project-team">
+                <div class="team-members">
+                    <p>Oğuzhan TOSUN • İbrahim YEĞEN</p>
+                    <p class="advisor">Danışman: Prof. Dr. Mustafa TÜRKER</p>
+                </div>
+            </div>
+            <a href="#proje" class="cta-button">Projeyi Keşfet</a>
+        </div>
+    </section>
+
+    <section id="proje" class="project-section">
+        <h2>Proje Hakkında</h2>
+        <div class="project-support">
+            <div class="support-info">
+                <h3>Proje Desteği</h3>
+                <p>Bu proje, TÜBİTAK 2209-A Üniversite Öğrencileri Araştırma Projeleri Destekleme Programı kapsamında desteklenmektedir.</p>
+            </div>
+        </div>
+        <div class="data-sources">
+            <h3>Veri Kaynakları ve İş Birlikleri</h3>
+            <div class="source-cards">
+                <div class="source-card">
+                    <i class="fas fa-database"></i>
+                    <h4>T.C. Tarım ve Orman Bakanlığı</h4>
+                    <ul>
+                        <li>Çiftçi Kayıt Sistemi (ÇKS) verileri</li>
+                        <li>Parsel bazlı mahsul bilgileri</li>
+                        <li>Tarımsal üretim istatistikleri</li>
+                    </ul>
+                </div>
+                <div class="source-card">
+                    <i class="fas fa-satellite"></i>
+                    <h4>Copernicus Programı</h4>
+                    <ul>
+                        <li>Sentinel-2 uydu görüntüleri</li>
+                        <li>Açık erişim veri politikası</li>
+                        <li>Düzenli veri akışı</li>
+                    </ul>
+                </div>
+                <div class="source-card">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <h4>Yerel Veri Kaynakları</h4>
+                    <ul>
+                        <li>Kırklareli İl Tarım Müdürlüğü verileri</li>
+                        <li>Çiftçi birlikleri kayıtları</li>
+                        <li>Arazi doğrulama çalışmaları</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="project-details">
+            <div class="project-card">
+                <div class="image-gallery">
+                    <img src="images/sentinel-2.jpg" alt="Sentinel-2 Uydu Görüntüsü" class="main-image">
+                    <div class="image-overlay">
+                        <div class="overlay-content">
+                            <h4>Sentinel-2 MSI</h4>
+                            <p>13 Spektral Bant</p>
+                            <p>10m Mekansal Çözünürlük</p>
+                            <p>5 Gün Zamansal Çözünürlük</p>
+                        </div>
+                    </div>
+                </div>
+                <h3>Veri Kaynağı: Sentinel-2</h3>
+                <p>Zaman serisi uydu görüntüleri ile mahsul analizi</p>
+                <div class="card-description">
+                    <p>Sentinel-2, Avrupa Uzay Ajansı'nın (ESA) Copernicus programı kapsamında geliştirilen yüksek çözünürlüklü optik uydu misyonudur. Bu çalışmada kullanılan veriler:</p>
+                    <ul>
+                        <li>Spektral Bantlar: 13 farklı spektral bant (443nm - 2190nm)</li>
+                        <li>Mekansal Çözünürlük: 10m ve 20m'den yeniden örneklenmiş bantlar</li>
+                        <li>Zamansal Çözünürlük: 5 günlük yeniden ziyaret</li>
+                        <li>Radyometrik Çözünürlük: 12-bit</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="project-card">
+                <img src="images/vision-ai.png" alt="Yapay Zeka Modeli">
+                <h3>BCDU-Net Mimarisi</h3>
+                <p>Çift Yönlü ConvLSTM ve Dense U-Net Yapısı</p>
+                <div class="card-description">
+                    <p>BCDU-Net (Bi-directional ConvLSTM with Dense U-Net), zaman serisi görüntü segmentasyonu için özelleştirilmiş bir derin öğrenme mimarisidir:</p>
+                    <ul>
+                        <li>Çift Yönlü ConvLSTM: Zamansal özellikleri ileri ve geri yönde analiz eder</li>
+                        <li>Dense Bağlantılar: Özellik haritalarının daha iyi aktarımını sağlar</li>
+                        <li>U-Net Yapısı: Çok ölçekli özellik çıkarımı ve birleştirme</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="project-card">
+                <img src="images/field.png" alt="Tarım Alanı">
+                <h3>Çalışma Alanı ve Mahsuller</h3>
+                <p>Kırklareli'nde 11 Farklı Mahsul Sınıfı</p>
+                <div class="card-description">
+                    <p>Kırklareli bölgesinde tespit edilen mahsul türleri ve analiz detayları:</p>
+                    <ul>
+                        <li>Buğday, Ayçiçeği, Mısır, Kanola, Arpa ve diğer mahsuller</li>
+                        <li>Toplam Alan: 150.000 hektar</li>
+                        <li>Veri Toplama Periyodu: 2021 Nisan - Eylül</li>
+                        <li>Yersel Doğrulama: 10000+ poligon</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="modern-interface">
+        <h2>Modern Teknoloji ve Kullanıcı Deneyimi</h2>
+        <div class="interface-showcase">
+            <div class="animated-banner">
+                <picture>
+                    <source srcset="images/webp.webp" type="image/webp">
+                    <img src="images/uitm.jpg" alt="Arayüz Animasyonu" class="animated-image">
+                </picture>
+            </div>
+            <div class="interface-text">
+                <h3>Uzaktan Algılama ve CBS'nin Modern Yüzü</h3>
+                <p>Projemiz, karmaşık uzaktan algılama ve CBS teknolojilerini kullanıcı dostu bir arayüzle birleştiriyor. Derin öğrenme modelimiz, uydu görüntülerini analiz ederken, modern web teknolojileri sayesinde sonuçları anlaşılır ve etkileşimli bir şekilde sunuyoruz.</p>
+            </div>
+            <div class="interface-gallery">
+                <div class="interface-card">
+                    <img src="images/uitm.jpg" alt="Modern Arayüz Görünümü">
+                    <div class="card-overlay">
+                        <h4>Etkileşimli Harita Arayüzü</h4>
+                        <p>Çoklu katman kontrolü ve analiz araçları</p>
+                    </div>
+                </div>
+                <div class="interface-card">
+                    <img src="images/uitm1.jpg" alt="Analiz Paneli">
+                    <div class="card-overlay">
+                        <h4>Gelişmiş Analiz Paneli</h4>
+                        <p>Gerçek zamanlı veri görselleştirme</p>
+                    </div>
+                </div>
+                <div class="interface-card">
+                    <img src="images/uitm2.jpg" alt="Kontrol Paneli">
+                    <div class="card-overlay">
+                        <h4>Akıllı Kontrol Paneli</h4>
+                        <p>Özelleştirilebilir raporlama araçları</p>
+                    </div>
+                </div>
+            </div>
+            <div class="tech-highlights">
+                <div class="highlight-item">
+                    <i class="fas fa-layer-group"></i>
+                    <h4>Çok Katmanlı Analiz</h4>
+                    <p>Farklı veri katmanlarını birleştirerek kapsamlı tarımsal analizler</p>
+                </div>
+                <div class="highlight-item">
+                    <i class="fas fa-brain"></i>
+                    <h4>Yapay Zeka Entegrasyonu</h4>
+                    <p>Derin öğrenme modellerinin web tabanlı kullanımı</p>
+                </div>
+                <div class="highlight-item">
+                    <i class="fas fa-chart-line"></i>
+                    <h4>Gerçek Zamanlı İzleme</h4>
+                    <p>Anlık veri akışı ve görselleştirme araçları</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="model" class="model-section">
+        <h2>Model Detayları ve Başarı Metrikleri</h2>
+        <div class="model-performance">
+            <div class="metric">
+                <h3>92.5%</h3>
+                <p>Piksel Doğruluğu</p>
+                <div class="metric-detail">
+                    <p>Piksellerin doğru sınıflandırma oranı, toplam piksel sayısına bölümü ile elde edilmiştir.</p>
+                </div>
+            </div>
+            <div class="metric">
+                <h3>92.4%</h3>
+                <p>Ortalama IoU</p>
+                <div class="metric-detail">
+                    <p>Intersection over Union (IoU), tahmin edilen ve gerçek sınıf maskelerinin kesişim/birleşim oranıdır.</p>
+                </div>
+            </div>
+            <div class="metric">
+                <h3>95.4%</h3>
+                <p>F1 Skor</p>
+                <div class="metric-detail">
+                    <p>Precision ve Recall değerlerinin harmonik ortalaması, sınıflandırma başarısının dengeli bir ölçüsüdür.</p>
+                </div>
+            </div>
+        </div>
+        <div class="implementation-details">
+            <h3>Teknik Uygulama Detayları</h3>
+            <div class="tech-details">
+                <div class="detail-item">
+                    <h4>Model Parametreleri</h4>
+                    <ul>
+                        <li>Temel Kanal Sayısı: 32</li>
+                        <li>Dropout: 0.4</li>
+                        <li>Öğrenme Hızı: 5x10⁻⁵</li>
+                        <li>Optimizasyon: Adam</li>
+                    </ul>
+                </div>
+                <div class="detail-item">
+                    <h4>Eğitim Detayları</h4>
+                    <ul>
+                        <li>Toplam Epoch: 49 (En iyi: 29. epoch)</li>
+                        <li>Eğitim Süresi: ~6 saat</li>
+                        <li>Platform: Google Colab (T4 GPU)</li>
+                        <li>Reduce-on-Plateau & Early Stopping</li>
+                    </ul>
+                </div>
+                <div class="detail-item">
+                    <h4>Model Başarısı</h4>
+                    <ul>
+                        <li>Cohen Kappa (κ): 0.92</li>
+                        <li>Sınıflar Arası Ayrım: Yüksek</li>
+                        <li>Minimum Karışım: Buğday-Ayçiçeği</li>
+                        <li>Diğer Sınıflar: Net Ayrım</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="tech-stack">
+            <h3></h3>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <img src="logos/python.png" alt="Python">
+                    <h5>Python</h5>
+                </div>
+                <div class="tech-item">
+                    <img src="logos/Pytorch_logo.png" alt="PyTorch">
+                    <h5>PyTorch</h5>
+                </div>
+                <div class="tech-item">
+                    <img src="logos/colab.png" alt="Google Colab">
+                    <h5>Google Colab</h5>
+                </div>
+                <div class="tech-item">
+                    <img src="logos/QGIS.png" alt="QGIS">
+                    <h5>QGIS</h5>
+                </div>
+                <div class="tech-item">
+                    <img src="logos/postgresql.png" alt="PostgreSQL">
+                    <h5>PostgreSQL</h5>
+                </div>
+                <div class="tech-item">
+                    <img src="logos/postgis-logo-1.png" alt="PostGIS">
+                    <h5>PostGIS</h5>
+                </div>
+                <div class="tech-item">
+                    <img src="logos/GeoServer_logo.png" alt="GeoServer">
+                    <h5>GeoServer</h5>
+                </div>
+                <div class="tech-item">
+                    <img src="logos/JavaScript-logo.png" alt="JavaScript">
+                    <h5>JavaScript</h5>
+                </div>
+                <div class="tech-item">
+                    <img src="logos/ubuntupng.png" alt="Ubuntu">
+                    <h5>Ubuntu</h5>
+                </div>
+                <div class="tech-item">
+                    <img src="logos/Copernicus_logo_pillars.png" alt="Copernicus">
+                    <h5>Copernicus</h5>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="sonuclar" class="results-section">
+        <h2>Proje Sonuçları ve Çıktılar</h2>
+        <div class="results-gallery">
+            <div class="result-card">
+                <div class="image-gallery">
+                    <img src="images/predictionmap.jpg" alt="Mahsul Haritası Tahmini" class="main-image">
+                </div>
+                <div class="result-content">
+                    <h3>Mahsul Haritası Tahmini</h3>
+                    <p>BCDU-Net modeli ile oluşturulan mahsul haritaları, %92.3 piksel doğruluğu ile 11 farklı mahsul türünü başarıyla sınıflandırmaktadır. Haritalar, tarımsal planlama ve verim tahmini için kullanılabilir niteliktedir.</p>
+                    <ul class="result-features">
+                        <li>Piksel bazlı sınıflandırma</li>
+                        <li>Mahsul türü dağılım analizi</li>
+                        <li>Zamansal değişim tespiti</li>
+                        <li>Alan bazlı istatistikler</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="result-card">
+                <div class="image-gallery">
+                    <img src="images/ui1.jpg" alt="Model Eğitim Arayüzü 1" class="main-image">
+                    <img src="images/ui2.jpg" alt="Model Eğitim Arayüzü 2" class="secondary-image">
+                </div>
+                <div class="result-content">
+                    <h3>Model Eğitim ve Analiz Arayüzü</h3>
+                    <p>PyQT5 ile geliştirilen kullanıcı dostu arayüz, model eğitimi ve sonuç analizini kolaylaştırmaktadır. Arayüz özellikleri:</p>
+                    <ul class="result-features">
+                        <li>Veri seti hazırlama ve görselleştirme</li>
+                        <li>Model hiperparametre optimizasyonu</li>
+                        <li>Eğitim sürecini izleme ve kontrol</li>
+                        <li>Sonuç analizi ve raporlama</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="result-card">
+                <div class="image-gallery">
+                    <img src="images/web1.jpg" alt="Web Görüntüleyici 1" class="main-image">
+                    <img src="images/web2.jpg" alt="Web Görüntüleyici 2" class="secondary-image">
+                </div>
+                <div class="result-content">
+                    <h3>Web Tabanlı Görüntüleyici</h3>
+                    <p>GeoServer ve JavaScript teknolojileri ile geliştirilen web tabanlı görüntüleyici, uydu görüntülerini ve analiz sonuçlarını interaktif olarak sunmaktadır:</p>
+                    <ul class="result-features">
+                        <li>Çoklu katman desteği</li>
+                        <li>Zamansal görüntü analizi</li>
+                        <li>Mekansal sorgulama ve filtreleme</li>
+                        <li>Vektör ve raster veri entegrasyonu</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="iletisim" class="contact-section">
+        <h2>İletişim</h2>
+        <div class="contact-form">
+            <form>
+                <input type="text" placeholder="Adınız">
+                <input type="email" placeholder="E-posta Adresiniz">
+                <textarea placeholder="Mesajınız"></textarea>
+                <button type="submit">Gönder</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="support-logos">
+                <img src="logos/TÜBİTAK_logo.svg.png" alt="TÜBİTAK Logo" class="footer-logo">
+                <img src="logos/Tarım_ve_Orman_Bakanlığı_logo.svg.png" alt="Tarım ve Orman Bakanlığı Logo" class="footer-logo">
+                <img src="logos/Hacettepe_Üniversitesi_Logosu.svg.png" alt="Hacettepe Üniversitesi Logo" class="footer-logo">
+            </div>
+            <p>Bu proje TÜBİTAK 2209-A Üniversite Öğrencileri Araştırma Projeleri Destekleme Programı kapsamında desteklenmektedir.</p>
+            <p>&copy; 2024 Hacettepe Üniversitesi Geomatik Mühendisliği</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html> 
