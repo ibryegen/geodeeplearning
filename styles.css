@@ -966,3 +966,75 @@ footer {
         font-size: 0.9rem;
     }
 } 
+
+/* Katlanabilir mimari listesi */
+.arch-summary { margin-bottom: 2rem; }
+.arch-summary summary {
+  cursor:pointer; font-weight:700; color:var(--primary-color);
+}
+.arch-list{margin:1rem 1.5rem; line-height:1.6;}
+
+/* Mimari figür */
+.arch-figure{
+  text-align:center; margin:3rem auto; max-width:900px;
+}
+.arch-figure img{
+  width:100%; border-radius:8px;
+  box-shadow:0 2px 10px rgba(0,0,0,.15);
+}
+.arch-figure figcaption{
+  font-size:.9rem; color:#555; margin-top:.5rem;
+}
+
+
+/* Eğitim grafikleri bölümü */
+/* —————— Training Graphs Bölümü —————— */
+.training-graphs {
+    padding: 3rem 5%;
+    background-color: var(--light-bg);
+    border-radius: 8px;
+    margin-top: 3rem;
+}
+
+/* Küçük grafikleri 3’erli göstermek için */
+.training-graphs .small-graphs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Grafik kareleri */
+.graph-figure img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.graph-figure figcaption {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 0.5rem;
+}
+
+/* Büyük Confusion Matrix tam genişlik */
+.training-graphs .confusion-matrix {
+    margin-top: 2rem;
+}
+
+.training-graphs .confusion-matrix .graph-figure {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.training-graphs .confusion-matrix .graph-figure img {
+    width: 100%;
+    height: auto;
+}
+
+.with-image::after {
+    content: url('images\Interpretation-of-kappa-values-by-Landis-and-Koch-scale.png');
+    display: block;       /* blok seviyesinde gösterim */
+    margin-top: .5em;     /* dilersen araya boşluk ekleyebilirsin */
+  }

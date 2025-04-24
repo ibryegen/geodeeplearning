@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BCDU-Net ile Mahsul Türü Tespiti</title>
+    <title>BCDU-Net ile Ürün Türü Tespiti</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
 </head>
 <body>
     <nav class="navbar">
-        <div class="logo">Derin Öğrenme ile Uydu Görüntülerinden Ürün Türü Tespiti</div>
+        <div class="logo">Derin Öğrenme ile Uydu Görüntülerinden Ürün Türü Tespiti - Hacettepe </div>
         <ul class="nav-links">
             <li><a href="#anasayfa">Ana Sayfa</a></li>
             <li><a href="#proje">Proje</a></li>
@@ -19,29 +20,187 @@
             <li><a href="#iletisim">İletişim</a></li>
         </ul>
     </nav>
-
+    
     <section id="anasayfa" class="hero">
         <div class="hero-content">
             <h1>Zaman Serisi Sentinel-2 Uydu Görüntülerinden Derin Öğrenme ile Ürün Türü Tespiti</h1>
-            <p>BCDU-Net modeli ile Kırklareli bölgesinde 11 farklı mahsul türünün tespiti</p>
+            <p>BCDU-Net modeli ile Kırklareli bölgesinde 11 farklı Ürün türünün tespiti</p>
             <div class="project-team">
                 <div class="team-members">
-                    <p>Oğuzhan TOSUN • İbrahim YEĞEN</p>
+                    <p>Oğuzhan TOSUN  • İbrahim YEĞEN </p>
                     <p class="advisor">Danışman: Prof. Dr. Mustafa TÜRKER</p>
                 </div>
             </div>
             <a href="#proje" class="cta-button">Projeyi Keşfet</a>
         </div>
     </section>
-
-    <section id="proje" class="project-section">
-        <h2>Proje Hakkında</h2>
-        <div class="project-support">
-            <div class="support-info">
-                <h3>Proje Desteği</h3>
-                <p>Bu proje, TÜBİTAK 2209-A Üniversite Öğrencileri Araştırma Projeleri Destekleme Programı kapsamında desteklenmektedir.</p>
+    <section id="model" class="model-section">
+        <h2>Model Detayları ve Başarı Metrikleri</h2>
+        <h4>NOT: Metrikler hesaplanırken Arka Plan (Background) sınıfı dahil edilmemiştir. Metrikler sadece gerçek yer verisi üzerinden hesaplanmıştır.</h4>
+        <div class="model-performance">
+            <div class="metric">
+                <h3>93.01%</h3>
+                <p>Piksel Doğruluğu</p>
+                <div class="metric-detail">
+                    <p>Piksellerin doğru sınıflandırma oranı, toplam piksel sayısına bölümü ile elde edilmiştir.</p>
+                </div>
+            </div>
+            <div class="metric">
+                <h3>92.30%</h3>
+                <p>Ortalama IoU</p>
+                <div class="metric-detail">
+                    <p>Mean IoU, her bir sınıf için hesaplanan IoU (kesişim/birleşim oranı) değerlerinin aritmetik ortalamasıdır. Çok sınıflı segmentasyonda modelin tüm sınıflar üzerindeki genel doğruluğunu dengeli bir şekilde özetler.</p>
+                    <p>IoU = TP / (TP + FP + FN)</p>
+                </div>
+            </div>
+            <div class="metric">
+                <h3>95.51%</h3>
+                <p>F1 Skor değeri</p>
+                <div class="metric-detail">
+                    <p>Precision ve Recall değerlerinin harmonik ortalaması, sınıflandırma başarısının dengeli bir ölçüsüdür.</p>
+                    <p>F1 = 2 × (Precision × Recall)/(Precision + Recall)</p>
+                </div>
             </div>
         </div>
+
+        <!-- ▸ Mimari diyagramı -->
+        <figure class="arch-figure">
+            <img src="model/architecture/arch.png" alt="BCDU‑Net ConvLSTM mimarisi">
+            <figcaption><b>Şekil 1.</b> BCDU‑Net + ConvLSTM + SE mimarisi</figcaption>
+        </figure>
+        <!-- ▸ Katlanabilir mimari özeti -->
+        <details class="arch-summary">
+            <summary>Mimarinin Katman Özeti&nbsp;<i class="fas fa-chevron-down"></i></summary>
+            <ul class="arch-list">
+                <li><b>Giriş</b>: 15 kanal × T zaman adımı</li>
+                <li><b>Encoder-1</b>: ResidualConv 15 → 32</li>
+                <li><b>Encoder-2</b>: ResidualConv 32 → 64</li>
+                <li><b>Encoder-3</b>: ResidualConv 64 → 128</li>
+                <li><b>Encoder-4</b>: ResidualConv 128 → 256</li>
+                <li><b>Bridge</b>: ResidualConv 256 → 512</li>
+                <li><b>Bottleneck ConvLSTM</b>: ConvLSTM (512 kanallı)</li>
+                <li><b>Bridge Attention</b>: SEBlock (512 kanallı)</li>
+                <li><b>Decoder-4</b>: UpConv 512 → 256 + ResidualConv 512 → 256</li>
+                <li><b>Decoder-3</b>: UpConv 256 → 128 + ResidualConv 256 → 128</li>
+                <li><b>Aux Head D3</b>: 128 → 12 (ara yardımcı çıktı)</li>
+                <li><b>Decoder-2</b>: UpConv 128 → 64 + ResidualConv 128 → 64</li>
+                <li><b>Aux Head D2</b>: 64 → 12 (ara yardımcı çıktı)</li>
+                <li><b>Decoder-1</b>: UpConv 64 → 32 + ResidualConv 64 → 32</li>
+                <li><b>Çıkış</b>: 1×1 Conv 32 → 12 sınıf</li>
+            </ul>
+        </details>
+
+        <!-- Eğitim ve Değerlendirme Grafikleri -->
+    </figure>
+
+    <div class="implementation-details">
+        <h3>Teknik Uygulama Detayları</h3>
+
+
+
+        <p>Model için eğitim epok sayısı <b>50</b>, temel kanal sayısı <b>32</b>, dropout değeri <b>0.4</b>, öğrenme hızı başlangıç için <b>5x10⁻⁵</b>, optimizasyon için <b>Adam</b> ve öğrenme hızının dinamik olarak değişmesi için <b>Reduce-on-Plateau</b> fonksiyonu seçilmiş; en iyi değerlere 25. epokta ulaşılmış ve kaydedilmiştir. Ardından erken durdurma algoritması devreye girerek 35. epokta eğitimi durdurmuştur. Eğitim Google Colab platformu üzerinde <b>T4 GPU</b> ile gerçekleştirilmiş, 35 epoch için yaklaşık 4.5 saat sürmüştür.</p>
+
+        <p>Eğitimde kullanılan toplam kayıp fonksiyonu, her pikselin doğru sınıfa atanmasını hedefleyen ağırlıklı <b>Çapraz Entropi (Cross-Entropy)</b> ile başlar; ardından, küçük ve seyrek sınıfların da doğru örtüşmeye sahip olması için <b>Dice kaybı</b> devreye girmektedir. Objelerin sınırlarının keskin kalması için kenar piksellerine odaklanan <b>Boundary Loss</b> (×0.2) eklenmiştir. Ayrıca modelin ara katmanlarından gelen tahminler üzerinden de <b>CE + Dice </b>uygulanarak (auxiliary loss ×0.3), derin katmanların da doğrudan geri besleme alması sağlanmıştır. Böylece hem genel doğruluk hem de sınır hassasiyeti dengeli bir şekilde optimize edilmiştir.</p>
+
+        <h2>Eğitim Kayıp Fonksiyonu</h2>
+        <p>
+          \[
+            \mathcal{L} = 
+            \underbrace{\bigl(\mathrm{CE}(p,y)\;+\;\mathrm{Dice}(p,y)\;+\;0.2\,\mathrm{Boundary}(p,y)\bigr)}_{L_{\mathrm{main}}}
+            \;+\;
+            0.3\;\underbrace{\bigl(\mathrm{CE}(p_{\mathrm{aux3}},y)\;+\;\mathrm{Dice}(p_{\mathrm{aux3}},y)
+            \;+\;\mathrm{CE}(p_{\mathrm{aux2}},y)\;+\;\mathrm{Dice}(p_{\mathrm{aux2}},y)\bigr)}_{L_{\mathrm{aux}}}
+          \]
+        </p>
+        <p>Modelin kaydedildiği 25. epokta ortalama <b>Intersection-over-Union (IoU) değeri %92.30</b>, <b>piksel doğruluk (accuracy) değeri %93.01, ağırlıklı F1 skor değeri %95.51, Cohen Kappa (κ) 0,92</b> (<i>Landis & Koch skalasına göre <b>"neredeyse mükemmel"</b></i>) değeri elde edilmiştir</p>    
+
+        <p>Modelin eğitim süreci, çeşitli hiperparametre ayarları ile optimize edilmiştir; fakat geliştirilmeye açıktır.</p>
+        
+        <figure style="text-align: center;">
+            <img
+              src="images\Interpretation-of-kappa-values-by-Landis-and-Koch-scale.png"
+              alt="Landis & Koch Kappa Tablosu"
+              style="display: inline-block; max-width: 100%; height: auto;"
+            />
+            <figcaption><i>Landis & Koch Kappa Tablosu</i></figcaption>
+        </figure>
+        
+        <div class="tech-details">
+            <div class="detail-item">
+                <h4>Model Parametreleri</h4>
+                <ul>
+                    <li>Batch Size: 64</li>
+                    <li>Temel Kanal Sayısı: 32</li>
+                    <li>Dropout: 0.4</li>
+                    <li>Başlangıç Öğrenme Hızı: 5x10⁻⁵</li>
+                    <li>Optimizasyon: Adam</li>
+                    <li>Planlanan Epoch Sayısı: 50</li>
+                    <li>Gerçekleşen Epoch Sayısı: 35</li>
+                </ul>
+            </div>
+            <div class="detail-item">
+                <h4>Eğitim Detayları</h4>
+                <ul>
+                    <li>Toplam Epoch: 50 (En iyi: 25. epoch)</li>
+                    <li>Eğitim Süresi: ~4.5 saat</li>
+                    <li>Platform: Google Colab (T4 GPU)</li>
+                    <li>Reduce-on-Plateau & Early Stopping</li>
+                </ul>
+            </div>
+            <div class="detail-item">
+                <h4>Model Başarısı</h4>
+                <ul>
+                    <li>Cohen Kappa (κ): 0.92 (Landis & Koch skalasına göre "neredeyse mükemmel")</li>
+                    <li>Sınıflar Arası Ayrım: Yüksek</li>
+                    <li>Minimum Karışım: Buğday-Ayçiçeği</li>
+                    <li>Diğer Sınıflar: Net Ayrım</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Eğitim ve Değerlendirme Grafikleri -->
+    <section id="training-graphs" class="training-graphs">
+        <h2>Eğitim &amp; Doğrulama Grafikleri</h2>
+
+        <!-- 3’erli Küçük Grafikleri Grupla -->
+        <div class="small-graphs">
+            <figure class="graph-figure">
+                <img src="model/metrics/graph_loss.png" alt="Eğitim ve Doğrulama Loss Eğrisi">
+                <figcaption>Eğitim ve Doğrulama Loss Eğrisi</figcaption>
+            </figure>
+            <figure class="graph-figure">
+                <img src="model/metrics/graph_accuracy.png" alt="Eğitim &amp; Doğrulama Accuracy Eğrisi">
+                <figcaption>Eğitim &amp; Doğrulama Accuracy Eğrisi</figcaption>
+            </figure>
+            <figure class="graph-figure">
+                <img src="model/metrics/graph_miou.png" alt="Sınıf Bazlı IoU Eğrileri">
+                <figcaption>Ortalama IoU Eğrisi</figcaption>
+            </figure>
+        </div>
+
+        <!-- Kalan Küçük Grafikleri (2 adet) -->
+        <div class="small-graphs">
+            <figure class="graph-figure">
+                <img src="model/metrics/graph_f1_score.png" alt="Öğrenme Hızı Değişim Grafiği">
+                <figcaption>F1 Skor Değeri Grafiği</figcaption>
+            </figure>
+            <figure class="graph-figure">
+                <img src="model/metrics/graph_kappa.png" alt="Başka Bir Küçük Grafik">
+                <figcaption>Cohen Kappa Değer Grafiği</figcaption>
+            </figure>
+        </div>
+
+        <!-- Büyük Confusion Matrix (tam genişlik) -->
+        <div class="confusion-matrix">
+            <figure class="graph-figure">
+                <img src="model/metrics/confmat_epoch25.png" alt="Test Seti Confusion Matrix’i">
+                <figcaption>Karışım Matrisi</figcaption>
+            </figure>
+        </div>
+    </section>
+
+
+    <section id="proje" class="project-section">
         <div class="data-sources">
             <h3>Veri Kaynakları ve İş Birlikleri</h3>
             <div class="source-cards">
@@ -50,7 +209,7 @@
                     <h4>T.C. Tarım ve Orman Bakanlığı</h4>
                     <ul>
                         <li>Çiftçi Kayıt Sistemi (ÇKS) verileri</li>
-                        <li>Parsel bazlı mahsul bilgileri</li>
+                        <li>Parsel bazlı Ürün bilgileri</li>
                         <li>Tarımsal üretim istatistikleri</li>
                     </ul>
                 </div>
@@ -89,7 +248,7 @@
                     </div>
                 </div>
                 <h3>Veri Kaynağı: Sentinel-2</h3>
-                <p>Zaman serisi uydu görüntüleri ile mahsul analizi</p>
+                <p>Uydu Görüntüleri ve Spektral Bantlar</p>
                 <div class="card-description">
                     <p>Sentinel-2, Avrupa Uzay Ajansı'nın (ESA) Copernicus programı kapsamında geliştirilen yüksek çözünürlüklü optik uydu misyonudur. Bu çalışmada kullanılan veriler:</p>
                     <ul>
@@ -102,12 +261,12 @@
             </div>
             <div class="project-card">
                 <img src="images/vision-ai.png" alt="Yapay Zeka Modeli">
-                <h3>BCDU-Net Mimarisi</h3>
-                <p>Çift Yönlü ConvLSTM ve Dense U-Net Yapısı</p>
+                <h3>BCDU-Net ConvLSTM Mimarisi</h3>
+                <p>Çift Yönlü ConvLSTM ve U-Net Yapısı</p>
                 <div class="card-description">
-                    <p>BCDU-Net (Bi-directional ConvLSTM with Dense U-Net), zaman serisi görüntü segmentasyonu için özelleştirilmiş bir derin öğrenme mimarisidir:</p>
+                    <p>BCDU-Net (Bi-Directional ConvLSTM with U-Net), zaman serisi görüntü segmentasyonu için özelleştirilmiş bir derin öğrenme mimarisidir:</p>
                     <ul>
-                        <li>Çift Yönlü ConvLSTM: Zamansal özellikleri ileri ve geri yönde analiz eder</li>
+                        <li>Çift Yönlü ConvLSTM: Zamansal özellikleri ileri yönde analiz eder</li>
                         <li>Dense Bağlantılar: Özellik haritalarının daha iyi aktarımını sağlar</li>
                         <li>U-Net Yapısı: Çok ölçekli özellik çıkarımı ve birleştirme</li>
                     </ul>
@@ -115,15 +274,15 @@
             </div>
             <div class="project-card">
                 <img src="images/field.png" alt="Tarım Alanı">
-                <h3>Çalışma Alanı ve Mahsuller</h3>
-                <p>Kırklareli'nde 11 Farklı Mahsul Sınıfı</p>
+                <h3>Çalışma Alanı ve Ürünler</h3>
+                <p>Kırklareli'nde 11 Farklı Ürün Sınıfı</p>
                 <div class="card-description">
-                    <p>Kırklareli bölgesinde tespit edilen mahsul türleri ve analiz detayları:</p>
+                    <p>Kırklareli bölgesinde tespit edilen Ürün türleri ve analiz detayları:</p>
                     <ul>
-                        <li>Buğday, Ayçiçeği, Mısır, Kanola, Arpa ve diğer mahsuller</li>
-                        <li>Toplam Alan: 150.000 hektar</li>
+                        <li>Arpa, Buğday, Ayçiçeği, Mısır, Ceviz ve diğer Ürünler</li>
+                        <li>Toplam Alan: ~282000.0 hektar</li>
                         <li>Veri Toplama Periyodu: 2021 Nisan - Eylül</li>
-                        <li>Yersel Doğrulama: 10000+ poligon</li>
+                        <li>Yersel Doğrulama: 14869 poligon</li>
                     </ul>
                 </div>
             </div>
@@ -185,124 +344,66 @@
             </div>
         </div>
     </section>
-
-    <section id="model" class="model-section">
-        <h2>Model Detayları ve Başarı Metrikleri</h2>
-        <div class="model-performance">
-            <div class="metric">
-                <h3>92.5%</h3>
-                <p>Piksel Doğruluğu</p>
-                <div class="metric-detail">
-                    <p>Piksellerin doğru sınıflandırma oranı, toplam piksel sayısına bölümü ile elde edilmiştir.</p>
-                </div>
-            </div>
-            <div class="metric">
-                <h3>92.4%</h3>
-                <p>Ortalama IoU</p>
-                <div class="metric-detail">
-                    <p>Intersection over Union (IoU), tahmin edilen ve gerçek sınıf maskelerinin kesişim/birleşim oranıdır.</p>
-                </div>
-            </div>
-            <div class="metric">
-                <h3>95.4%</h3>
-                <p>F1 Skor</p>
-                <div class="metric-detail">
-                    <p>Precision ve Recall değerlerinin harmonik ortalaması, sınıflandırma başarısının dengeli bir ölçüsüdür.</p>
-                </div>
-            </div>
+</section>
+<div class="tech-stack">
+    <h3></h3>
+    <div class="tech-grid">
+        <!-- 1. Tech Item -->
+        <div class="tech-item">
+            <img src="logos/Tux.svg.png" alt="Linux">
+            <h5>Python</h5>
         </div>
-        <div class="implementation-details">
-            <h3>Teknik Uygulama Detayları</h3>
-            <div class="tech-details">
-                <div class="detail-item">
-                    <h4>Model Parametreleri</h4>
-                    <ul>
-                        <li>Temel Kanal Sayısı: 32</li>
-                        <li>Dropout: 0.4</li>
-                        <li>Öğrenme Hızı: 5x10⁻⁵</li>
-                        <li>Optimizasyon: Adam</li>
-                    </ul>
-                </div>
-                <div class="detail-item">
-                    <h4>Eğitim Detayları</h4>
-                    <ul>
-                        <li>Toplam Epoch: 49 (En iyi: 29. epoch)</li>
-                        <li>Eğitim Süresi: ~6 saat</li>
-                        <li>Platform: Google Colab (T4 GPU)</li>
-                        <li>Reduce-on-Plateau & Early Stopping</li>
-                    </ul>
-                </div>
-                <div class="detail-item">
-                    <h4>Model Başarısı</h4>
-                    <ul>
-                        <li>Cohen Kappa (κ): 0.92</li>
-                        <li>Sınıflar Arası Ayrım: Yüksek</li>
-                        <li>Minimum Karışım: Buğday-Ayçiçeği</li>
-                        <li>Diğer Sınıflar: Net Ayrım</li>
-                    </ul>
-                </div>
-            </div>
+        <!-- 2. Tech Item -->
+        <div class="tech-item">
+            <img src="logos/Pytorch_logo.png" alt="PyTorch">
+            <h5>PyTorch</h5>
         </div>
-        <div class="tech-stack">
-            <h3></h3>
-            <div class="tech-grid">
-                <div class="tech-item">
-                    <img src="logos/python.png" alt="Python">
-                    <h5>Python</h5>
-                </div>
-                <div class="tech-item">
-                    <img src="logos/Pytorch_logo.png" alt="PyTorch">
-                    <h5>PyTorch</h5>
-                </div>
-                <div class="tech-item">
-                    <img src="logos/colab.png" alt="Google Colab">
-                    <h5>Google Colab</h5>
-                </div>
-                <div class="tech-item">
-                    <img src="logos/QGIS.png" alt="QGIS">
-                    <h5>QGIS</h5>
-                </div>
-                <div class="tech-item">
-                    <img src="logos/postgresql.png" alt="PostgreSQL">
-                    <h5>PostgreSQL</h5>
-                </div>
-                <div class="tech-item">
-                    <img src="logos/postgis-logo-1.png" alt="PostGIS">
-                    <h5>PostGIS</h5>
-                </div>
-                <div class="tech-item">
-                    <img src="logos/GeoServer_logo.png" alt="GeoServer">
-                    <h5>GeoServer</h5>
-                </div>
-                <div class="tech-item">
-                    <img src="logos/JavaScript-logo.png" alt="JavaScript">
-                    <h5>JavaScript</h5>
-                </div>
-                <div class="tech-item">
-                    <img src="logos/ubuntupng.png" alt="Ubuntu">
-                    <h5>Ubuntu</h5>
-                </div>
-                <div class="tech-item">
-                    <img src="logos/Copernicus_logo_pillars.png" alt="Copernicus">
-                    <h5>Copernicus</h5>
-                </div>
-            </div>
+        <!-- 3. Tech Item -->
+        <div class="tech-item">
+            <img src="logos/python.png" alt="Python">
+            <h5>Python</h5>
         </div>
-    </section>
+        <!-- 4. Tech Item -->
+        <div class="tech-item">
+            <img src="logos/JavaScript-logo.png" alt="JavaScript">
+            <h5>JavaScript</h5>
+        </div>
+        <!-- 5. Tech Item -->
+        <div class="tech-item">
+            <img src="logos/postgresql.png" alt="PostgreSQL">
+            <h5>PostgreSQL</h5>
+        </div>
+        <!-- 6. Tech Item -->
+        <div class="tech-item">
+            <img src="logos/postgis-logo-1.png" alt="PostGIS">
+            <h5>PostGIS</h5>
+        </div>
+        <!-- 7. Tech Item -->
+        <div class="tech-item">
+            <img src="logos/GeoServer_logo.png" alt="GeoServer">
+            <h5>GeoServer</h5>
+        </div>
+        <!-- 8. Tech Item -->
+        <div class="tech-item">
+            <img src="logos/Copernicus_logo_pillars.png" alt="Copernicus">
+            <h5>Copernicus</h5>
+        </div>
+    </div>
+</div>
 
     <section id="sonuclar" class="results-section">
         <h2>Proje Sonuçları ve Çıktılar</h2>
         <div class="results-gallery">
             <div class="result-card">
                 <div class="image-gallery">
-                    <img src="images/predictionmap.jpg" alt="Mahsul Haritası Tahmini" class="main-image">
+                    <img src="images/predictionmap.jpg" alt="Ürün Haritası Tahmini" class="main-image">
                 </div>
                 <div class="result-content">
-                    <h3>Mahsul Haritası Tahmini</h3>
-                    <p>BCDU-Net modeli ile oluşturulan mahsul haritaları, %92.3 piksel doğruluğu ile 11 farklı mahsul türünü başarıyla sınıflandırmaktadır. Haritalar, tarımsal planlama ve verim tahmini için kullanılabilir niteliktedir.</p>
+                    <h3>Ürün Haritası Tahmini</h3>
+                    <p>BCDU-Net modeli ile oluşturulan Ürün haritaları, %93.01 piksel doğruluğu ve %92.30 ortalama IoU değeri ile 11 farklı Ürün türünü başarıyla sınıflandırmaktadır. Haritalar, tarımsal planlama ve verim tahmini için kullanılabilir niteliktedir.</p>
                     <ul class="result-features">
                         <li>Piksel bazlı sınıflandırma</li>
-                        <li>Mahsul türü dağılım analizi</li>
+                        <li>Ürün türü dağılım analizi</li>
                         <li>Zamansal değişim tespiti</li>
                         <li>Alan bazlı istatistikler</li>
                     </ul>
@@ -341,20 +442,10 @@
                 </div>
             </div>
         </div>
-    </section>
 
-    <section id="iletisim" class="contact-section">
-        <h2>İletişim</h2>
-        <div class="contact-form">
-            <form>
-                <input type="text" placeholder="Adınız">
-                <input type="email" placeholder="E-posta Adresiniz">
-                <textarea placeholder="Mesajınız"></textarea>
-                <button type="submit">Gönder</button>
-            </form>
-        </div>
-    </section>
 
+
+    </div>
     <footer>
         <div class="footer-content">
             <div class="support-logos">
@@ -363,10 +454,10 @@
                 <img src="logos/Hacettepe_Üniversitesi_Logosu.svg.png" alt="Hacettepe Üniversitesi Logo" class="footer-logo">
             </div>
             <p>Bu proje TÜBİTAK 2209-A Üniversite Öğrencileri Araştırma Projeleri Destekleme Programı kapsamında desteklenmektedir.</p>
-            <p>&copy; 2024 Hacettepe Üniversitesi Geomatik Mühendisliği</p>
+            <p>&copy; 2025 Hacettepe Üniversitesi Geomatik Mühendisliği</p>
         </div>
-    </footer>
-
+    </footer>   
+        
     <script src="script.js"></script>
 </body>
 </html> 
