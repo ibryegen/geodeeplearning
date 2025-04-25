@@ -170,13 +170,6 @@ h2 {
     position: relative;
 }
 
-.card-description li:before,
-.result-features li:before {
-    content: "•";
-    color: var(--secondary-color);
-    position: absolute;
-    left: 0;
-}
 
 .metric-detail {
     margin-top: 1rem;
@@ -310,97 +303,6 @@ h2 {
     font-size: 0.9rem;
 }
 
-.results-gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-}
-
-.result-card {
-    background-color: white;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-    transition: transform 0.3s;
-    margin-bottom: 2rem;
-}
-
-.result-card:hover {
-    transform: translateY(-5px);
-}
-
-.result-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-}
-
-.result-content {
-    padding: 2rem;
-}
-
-.result-content h3 {
-    color: var(--primary-color);
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
-}
-
-.result-content p {
-    margin-bottom: 1.5rem;
-    line-height: 1.6;
-}
-
-.result-features {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.result-features li {
-    margin: 0.5rem 0;
-    padding-left: 1.5rem;
-    position: relative;
-}
-
-.result-features li:before {
-    content: "→";
-    color: var(--secondary-color);
-    position: absolute;
-    left: 0;
-}
-
-.contact-form {
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.contact-form input,
-.contact-form textarea {
-    width: 100%;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-.contact-form textarea {
-    height: 150px;
-    resize: vertical;
-}
-
-.contact-form button {
-    background-color: var(--secondary-color);
-    color: white;
-    padding: 1rem 2rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.contact-form button:hover {
-    background-color: #2980b9;
-}
 
 footer {
     background-color: var(--primary-color);
@@ -423,10 +325,6 @@ footer {
         padding: 3rem 5%;
     }
     
-    .project-details,
-    .results-gallery {
-        grid-template-columns: 1fr;
-    }
     
     .tech-details {
         grid-template-columns: 1fr;
@@ -442,14 +340,6 @@ footer {
 
     .image-gallery {
         height: 200px;
-    }
-
-    .result-content {
-        padding: 1.5rem;
-    }
-
-    .result-content h3 {
-        font-size: 1.3rem;
     }
 
     .tech-grid {
@@ -633,52 +523,7 @@ footer {
     opacity: 1;
 }
 
-.result-card {
-    background-color: white;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-    transition: transform 0.3s;
-    margin-bottom: 2rem;
-}
 
-.result-card:hover {
-    transform: translateY(-5px);
-}
-
-.result-content {
-    padding: 2rem;
-}
-
-.result-content h3 {
-    color: var(--primary-color);
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
-}
-
-.result-content p {
-    margin-bottom: 1.5rem;
-    line-height: 1.6;
-}
-
-.result-features {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.result-features li {
-    margin: 0.5rem 0;
-    padding-left: 1.5rem;
-    position: relative;
-}
-
-.result-features li:before {
-    content: "→";
-    color: var(--secondary-color);
-    position: absolute;
-    left: 0;
-}
 
 @media (max-width: 768px) {
     .image-gallery {
@@ -1038,3 +883,181 @@ footer {
     display: block;       /* blok seviyesinde gösterim */
     margin-top: .5em;     /* dilersen araya boşluk ekleyebilirsin */
   }
+
+
+  .dataset-section {
+    display: flex;
+    flex-direction: column;   /* dikey akış aynı kalsın */
+    align-items: center;      /* yatayda ortala */
+}
+
+/* Başlığın kendi stilleri */
+.dataset-section h2 {
+    font-size: 2.5rem;
+    letter-spacing: 0.5px;
+    color: #2c3e50;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid var(--secondary-color);
+    padding-bottom: 0.5rem;
+}
+
+
+.dataset-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 3rem 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    line-height: 1.8;
+}
+
+.dataset-content p {
+    font-size: 1.1rem;
+    color: #444;
+    margin-bottom: 1.5rem;
+}
+
+.dataset-details,
+.dataset-source {
+    margin-top: 2.5rem;
+    padding: 2rem;
+    background-color: #f2f6f9;
+    border-left: 6px solid var(--secondary-color);
+    border-radius: 10px;
+}
+
+.dataset-details h4,
+.dataset-source h4 {
+    color: var(--primary-color);
+    margin-bottom: 1.2rem;
+    font-size: 1.3rem;
+}
+
+.dataset-details ul,
+.dataset-source ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dataset-details li,
+.dataset-source li {
+    padding-left: 1.8rem;
+    position: relative;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    color: #333;
+}
+
+.dataset-details li::before,
+.dataset-source li::before {
+    content: "✔";
+    position: absolute;
+    left: 0;
+    color: var(--secondary-color);
+    font-weight: bold;
+    font-size: 1rem;
+    top: 0.1rem;
+}
+
+
+.tech-stack-note {
+    text-align: center;
+    font-size: 0.75rem;
+    color: #777;
+    margin-top: 1rem;
+    padding: 0 1.5rem;
+    line-height: 1.5;
+}
+.tech-stack-note a {
+    color: #777;
+    text-decoration: underline;
+}
+
+
+.results-summary {
+    padding: 5rem 5%;
+    background-color: var(--light-bg);
+    border-radius: 10px;
+    margin-top: 3rem;
+}
+
+.results-summary h2 {
+    text-align: center;
+    color: var(--primary-color);
+    font-size: 2.3rem;
+    margin-bottom: 2rem;
+}
+
+.results-intro {
+    max-width: 800px;
+    margin: 0 auto 3rem;
+    text-align: center;
+    color: #444;
+    font-size: 1.05rem;
+    line-height: 1.8;
+}
+
+.results-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.result-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.result-card:hover {
+    transform: translateY(-5px);
+}
+
+.result-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.result-content {
+    padding: 1.5rem;
+}
+
+.result-content h3 {
+    color: var(--primary-color);
+    margin-bottom: 0.8rem;
+    font-size: 1.2rem;
+}
+
+.result-content p {
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.full-width-image-block {
+    max-width: 1000px;
+    margin: 3rem auto;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 1rem;
+    text-align: center;
+}
+
+.full-width-image-block img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: contain;
+}
+
+.full-width-image-block figcaption {
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 0.8rem;
+}
